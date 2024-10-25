@@ -44,11 +44,15 @@ def main(mesh,source,output,save_pc=False):
     if save_pc:
         ms.set_current_mesh(1)
         ms.compute_color_from_scalar_per_vertex(colormap='Viridis')
+        # print('Getting color')
+        # ms.compute_color_from_scalar_per_vertex(colormap='Viridis',minval=0,maxval=3.0105786323547363)
+        # print('Saving')
         ms.save_current_mesh(pcname,binary=False)
 
         cbar_name=pcname.replace('_pc.ply','_cbar.png')
         cmap = mpl.cm.viridis
         norm = mpl.colors.Normalize(vmin=np.min(d), vmax=np.max(d))
+        # norm = mpl.colors.Normalize(vmin=0, vmax=3.0105786323547363)
         fig, ax = plt.subplots(figsize=(1, 6), layout='constrained')
         cbar=fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap),
              cax=ax, orientation='vertical')
@@ -71,7 +75,7 @@ if __name__=='__main__':
     parser.add_argument("mesh", help="Input mesh file.")
     parser.add_argument("source", help="Input SWC file.")
     parser.add_argument("output", help="Output text file.")
-    parser.add_argument("--save_pc",help="Optional flag to save point cloud distances",default=0)
+    parser.add_argument("--save_pc",type=int,help="Optional flag to save point cloud distances",default=0)
     args = parser.parse_args()
     mesh=args.mesh
     source=args.source
